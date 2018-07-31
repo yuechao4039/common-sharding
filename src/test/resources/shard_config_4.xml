@@ -2,11 +2,9 @@
 <!DOCTYPE shardingConfig PUBLIC "-//shardbatis.googlecode.com//DTD Shardbatis 2.0//EN"
   "http://shardbatis.googlecode.com/dtd/shardbatis-config.dtd">
 <shardingConfig>
-		<ignoreList>
-			<value>ignoreId1</value>
-			<value>ignoreId2</value>
-			<value>com.google.code.shardbatis.test.mapper.AppTestMapper.insertNoShard</value>
-		</ignoreList>
+		<!--<ignoreList>
+			<value>com.sndj.CountryMapper.query</value>
+		</ignoreList>-->
 		<!-- 
 		<parseList>
 			<value>parseId</value>
@@ -15,6 +13,8 @@
 		
 		
 		
+<!--
         <strategy tableName="APP_TEST" strategyClass="com.google.code.shardbatis.strategy.impl.AppTestShardStrategyImpl"/>
-        
+-->
+    <strategy tableName="tbl_account_general_ledger" strategyClass="com.dld.hll.shardbatis.strategy.impl.GeneralLedgerStrategy"/>
 </shardingConfig>
