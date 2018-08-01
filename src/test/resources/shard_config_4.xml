@@ -10,11 +10,10 @@
 			<value>parseId</value>
 			<value> <![CDATA[ parseid>2]]></value>
 		</parseList> -->
-		
-		
-		
+
 <!--
         <strategy tableName="APP_TEST" strategyClass="com.google.code.shardbatis.strategy.impl.AppTestShardStrategyImpl"/>
 -->
-    <strategy tableName="tbl_account_general_ledger" strategyClass="com.dld.hll.shardbatis.strategy.impl.GeneralLedgerStrategy"/>
+    <strategy tableName="tbl_account_general_ledger"
+              strategyClass="com.dld.hll.shardbatis.strategy.impl.GeneralLedgerStrategy"/>
 </shardingConfig>

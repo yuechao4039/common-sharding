@@ -13,6 +13,6 @@
 			<value> <![CDATA[ parseid>2]]></value>
 		</parseList>
 		
-        <strategy tableName="test_table1" strategyClass="com.google.code.shardbatis.strategy.impl.TestShardStrategyImpl"/>
-        <strategy tableName="test_table2" strategyClass="com.google.code.shardbatis.strategy.impl.TestShardStrategyImpl"/>
+        <strategy tableName="test_table1" strategyClass="com.dld.hll.shardbatis.strategy.impl.TestShardStrategyImpl"/>
+        <strategy tableName="test_table2" strategyClass="com.dld.hll.shardbatis.strategy.impl.TestShardStrategyImpl"/>
 </shardingConfig>

@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.dld.hll.shardbatis.plugin;
 
 import java.io.IOException;
@@ -10,13 +7,16 @@ import java.sql.Connection;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.dld.hll.shardbatis.ShardException;
 import com.dld.hll.shardbatis.anno.ShardingTable;
 import com.dld.hll.shardbatis.builder.ShardConfigHolder;
 import com.dld.hll.shardbatis.builder.ShardConfigParser;
 import com.dld.hll.shardbatis.converter.SqlConverterFactory;
 import com.dld.hll.shardbatis.util.ReflectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.executor.statement.RoutingStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
+import org.apache.ibatis.io.ResolverUtil;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
@@ -27,8 +27,9 @@ import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.plugin.Signature;
+import org.xml.sax.SAXException;
 
-
+import javax.xml.parsers.ParserConfigurationException;
 
 
 @Intercepts({@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class})})
@@ -72,44 +73,36 @@ public class ShardPlugin implements Interceptor {
     }
 
     public Object plugin(Object target) {
-        return target instanceof StatementHandler ? Plugin.wrap(target, this):target;
-//        return Plugin.wrap(target, this);
+        return target instanceof StatementHandler ? Plugin.wrap(target, this) : target;
     }
 
     public void setProperties(Properties properties) {
         // 解析配置文件
-        String config = properties.getProperty(SHARDING_CONFIG, null);
-        if (config == null || config.trim().length() == 0) {
+        String config = properties.getProperty(SHARDING_CONFIG);
+        if (StringUtils.isEmpty(config)) {
             throw new IllegalArgumentException(
                     "property 'shardingConfig' is requested.");
         }
 
         ShardConfigParser parser = new ShardConfigParser();
-        InputStream input = null;
-
-        try {
-            input = Resources.getResourceAsStream(config);
+        try (InputStream input = Resources.getResourceAsStream(config)) {
             parser.parse(input);
         } catch (IOException e) {
-            log.error("Get sharding config file failed.", e);
-            throw new IllegalArgumentException(e);
-        } catch (Exception e) {
-            log.error("Parse sharding config file failed.", e);
-            throw new IllegalArgumentException(e);
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    log.error(e.getMessage(), e);
-                }
-            }
-
+            String msg = "Get sharding config file failed.";
+            log.error(msg, e);
+            throw new ShardException(msg);
+        } catch (SAXException e) {
+            String msg = "Parse sharding config file failed.";
+            log.error(msg, e);
+            throw new ShardException(msg);
+        } catch (ParserConfigurationException e) {
+            String msg = "Parse sharding config file failed.";
+            log.error(msg, e);
+            throw new ShardException(msg);
         }
-
     }
 
-    private boolean isShouldParse(String mapperId) {
+    private boolean isShouldParse(String mapperId)  {
         Boolean parse = cache.get(mapperId);
 
         if (parse != null) {//已被缓存
@@ -119,11 +112,13 @@ public class ShardPlugin implements Interceptor {
         String className = mapperId.substring(0, mapperId.lastIndexOf("."));
         String methodName = mapperId.substring(mapperId.lastIndexOf(".") + 1);
         Class<?> clazz = null;
+
         try {
-            clazz = Class.forName(className);
+            Resources.classForName(className);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            throw new ShardException("class not found ");
         }
+
         Method method = ReflectionUtils.findMethod(clazz.getDeclaredMethods(), methodName);
         /*
          * 1.<selectKey>不做解析

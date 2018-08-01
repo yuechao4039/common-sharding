@@ -8,9 +8,9 @@ import java.util.List;
 
 import com.dld.hll.shardbatis.ShardException;
 import com.dld.hll.shardbatis.builder.ShardConfigParser;
-import junit.framework.Assert;
 
 import org.apache.ibatis.io.Resources;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

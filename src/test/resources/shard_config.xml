@@ -5,7 +5,7 @@
 		<ignoreList>
 			<value>ignoreId1</value>
 			<value>ignoreId2</value>
-			<value>com.google.code.shardbatis.test.mapper.AppTestMapper.insertNoShard</value>
+			<value>com.dld.hll.shardbatis.test.mapper.AppTestMapper.insertNoShard</value>
 		</ignoreList>
 		<!-- 
 		<parseList>

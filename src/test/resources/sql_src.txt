@@ -7,7 +7,7 @@ select col_1,col_2,col_3 from test_table1 where col_4='t1' order by col_1
 select col_1,col_2,col_3 from test_table1 where id in (?,?,?,?,?,?,?,?,?) limit ?,?
 select a.*  from test_table1 a,test_table2 b where a.id=b.id and a.type='xxxx'
 select a.col_1,a.col_2,a.col_3 from test_table1 a where a.id in (select aid from test_table2 where col_1=1 and col_2=?) order by id desc
-select col_1,col_2 from test_table1 where type is not null and col_3 is null order by id
+select col_1,col_2 from test_table1 where type is not null and col_3 is null order by id asc
 select count(*),col_1 from test_table2 group by col_1 having count(*)>1
 select a.col_1,a.col_2,b.col_1 from test_table1 a,t_table b where a.id=b.id
 insert into test_table1 (col_1,col_2,col_3,col_4) values (?,?,?,?)

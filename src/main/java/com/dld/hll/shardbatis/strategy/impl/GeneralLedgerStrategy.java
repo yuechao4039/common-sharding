@@ -1,17 +1,19 @@
 package com.dld.hll.shardbatis.strategy.impl;
 
+import com.dld.hll.shardbatis.ShardException;
 import com.dld.hll.shardbatis.strategy.ShardStrategy;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
 
 /**
+ * // 表名加后两位 _accountID MOD 10 _ accountYear MOD 10
  * @author yuechao 2018/7/31
  */
 public class GeneralLedgerStrategy implements ShardStrategy {
 
     private static final String SHARD_FIELD_ACCOUNTID = "accountID";
 
-    // 表名加后两位 _accountID MOD 10 _ accountYear MOD 10
+
 
     private static final String SHARD_FIELD_ACCOUNTYEAR = "accountYear";
 
@@ -24,13 +26,17 @@ public class GeneralLedgerStrategy implements ShardStrategy {
         MetaObject metaObject = SystemMetaObject.forObject(parameterObject);
         StringBuilder sb = new StringBuilder(originTableName);
 
-        String fieldValue = String.valueOf(metaObject.getValue(SHARD_FIELD_ACCOUNTID));
+        Object accountID = metaObject.getValue(SHARD_FIELD_ACCOUNTID);
+        Object accountYear = metaObject.getValue(SHARD_FIELD_ACCOUNTYEAR);
+        if (accountID == null) {
+            throw new ShardException("accountID not in parameter");
+        }
+        if (accountYear == null) {
+            throw new ShardException("accountYear not in parameter");
 
-        sb.append("_").append(fieldValue);
+        }
+        sb.append("_").append(Integer.valueOf(accountID.toString()) % 10).append(Integer.valueOf(accountYear.toString()) % 10);
 
-        fieldValue = String.valueOf(metaObject.getValue(SHARD_FIELD_ACCOUNTYEAR));
-
-        sb.append("_").append(fieldValue);
         return sb.toString();
 
 

@@ -34,7 +34,6 @@ public abstract class AbstractSqlConverter implements SqlConverter {
 	/**
 	 * 从ShardConfigFactory中查找ShardStrategy并对表名进行修改<br>
 	 * 如果没有相应的ShardStrategy则对表名不做修改
-	 * 
 	 * @param tableName
 	 * @param params
 	 * @param mapperId

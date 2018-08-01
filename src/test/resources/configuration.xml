@@ -7,10 +7,8 @@
     <properties resource="jdbc.properties">
         <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
     </properties>
+
     <settings>
-
-
-
         <setting name="cacheEnabled" value="false"/>
 
 
@@ -26,14 +24,14 @@
         <setting name="mapUnderscoreToCamelCase" value="true"/>
 
         <setting name="useActualParamName" value="true"/>
-        
+
         <setting name="logPrefix" value="p"/>
 
 
     </settings>
-   <!-- <typeAliases>
-        <package name="com.sndj" />
-    </typeAliases>-->
+    <!-- <typeAliases>
+         <package name="com.sndj" />
+     </typeAliases>-->
 
     <typeHandlers>
         <!--<package name=""/>-->
@@ -47,7 +45,7 @@
     <objectWrapperFactory type="org.apache.ibatis.reflection.wrapper.DefaultObjectWrapperFactory"/>
 
     <reflectorFactory type="org.apache.ibatis.reflection.DefaultReflectorFactory"/>
-    
+
     <plugins>
         <!--<plugin interceptor="com.sndj.ExamplePlugin">
 
@@ -59,8 +57,8 @@
         </plugin>-->
 
         <plugin interceptor="com.dld.hll.shardbatis.plugin.ShardPlugin">
-            
-            <property name="shardingConfig" value="shard_config_4.xml" />
+
+            <property name="shardingConfig" value="shard_config_4.xml"/>
 
         </plugin>
     </plugins>
@@ -88,7 +86,7 @@
     <mappers>
         <!--<package name="com.sndj"/>-->
         <!--<mapper url=""/>-->
-        <mapper  class="com.sndj.CountryMapper" />
+        <mapper class="com.sndj.CountryMapper"/>
         <!--<mapper resource="CountryMapper.xml"/>-->
 
 

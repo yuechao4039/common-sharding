@@ -6,6 +6,7 @@ package com.dld.hll.shardbatis.converter;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.Select;
+import net.sf.jsqlparser.util.deparser.ExpressionDeParser;
 import net.sf.jsqlparser.util.deparser.SelectDeParser;
 
 /**
@@ -28,17 +29,35 @@ public class SelectSqlConverter extends AbstractSqlConverter {
 			throw new IllegalArgumentException(
 					"The argument statement must is instance of Select.");
 		}
-        SelectDeParser selectDeParser = new SelectDeParser() {
+
+
+        StringBuilder buffer = new StringBuilder();
+        ExpressionDeParser expressionDeParser = new ExpressionDeParser();
+        SelectDeParser deparser = new SelectDeParser(expressionDeParser,buffer ) {
             @Override
             public void visit(Table tableName) {
-                 String table = tableName.getName();
+                String table = tableName.getName();
                 table = convertTableName(table, params, mapperId);
-                // convert table name
                 tableName.setName(table);
                 super.visit(tableName);
-            }
+            };
         };
-        ((Select) statement).getSelectBody().accept(selectDeParser);
+        expressionDeParser.setSelectVisitor(deparser);
+        expressionDeParser.setBuffer(buffer);
+        ((Select) statement).getSelectBody().accept(deparser);
+
+
+//        SelectDeParser selectDeParser = new SelectDeParser() {
+//            @Override
+//            public void visit(Table tableName) {
+//                 String table = tableName.getName();
+//                table = convertTableName(table, params, mapperId);
+//                // convert table name
+//                tableName.setName(table);
+//                super.visit(tableName);
+//            }
+//        };
+//        ((Select) statement).getSelectBody().accept(selectDeParser);
 
 //		TableNameModifier modifier = new TableNameModifier(params, mapperId);
 //		((Select) statement).getSelectBody().accept(modifier);

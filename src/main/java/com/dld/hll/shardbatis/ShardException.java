@@ -1,7 +1,7 @@
 package com.dld.hll.shardbatis;
 
 
-public class ShardException extends Exception {
+public class ShardException extends RuntimeException {
 
 	private static final long serialVersionUID = 1793760050084714190L;
 
