@@ -2,18 +2,13 @@
 <!DOCTYPE shardingConfig PUBLIC "-//shardbatis.googlecode.com//DTD Shardbatis 2.0//EN"
   "http://shardbatis.googlecode.com/dtd/shardbatis-config.dtd">
 <shardingConfig>
-		<!--<ignoreList>
-			<value>com.sndj.CountryMapper.query</value>
-		</ignoreList>-->
+
 		<!-- 
 		<parseList>
 			<value>parseId</value>
 			<value> <![CDATA[ parseid>2]]></value>
 		</parseList> -->
 
-<!--
-        <strategy tableName="APP_TEST" strategyClass="com.google.code.shardbatis.strategy.impl.AppTestShardStrategyImpl"/>
--->
-    <strategy tableName="tbl_account_general_ledger"
+    <strategy tableName="country"
               strategyClass="com.dld.hll.shardbatis.strategy.impl.GeneralLedgerStrategy"/>
 </shardingConfig>

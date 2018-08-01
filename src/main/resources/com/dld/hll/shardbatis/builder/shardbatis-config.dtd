@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!ELEMENT shardingConfig (ignoreList?,parseList?,strategy*)>
-<!ELEMENT ignoreList (value+)>
+<!ELEMENT shardingConfig (parseList?,strategy*)>
 <!ELEMENT parseList (value+)>
 <!ELEMENT value (#PCDATA)>
 <!ELEMENT strategy EMPTY>
 <!ATTLIST strategy
 tableName CDATA #REQUIRED
-strategyClass CDATA #REQUIRED
->
+strategyClass CDATA #REQUIRED>

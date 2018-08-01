@@ -57,9 +57,7 @@
         </plugin>-->
 
         <plugin interceptor="com.dld.hll.shardbatis.plugin.ShardPlugin">
-
-            <property name="shardingConfig" value="shard_config_4.xml"/>
-
+            <property name="shardingConfig" value="shard_config_4.xml" />
         </plugin>
     </plugins>
 

@@ -42,12 +42,13 @@ public class BaseTest {
         Country country = new Country();
         country.setCountrycode("SH");
         country.setCountryname("上海");
-        country.setAccountID(1003);
+        country.setAccountID(1001);
         country.setId(5);
+        country.setAccountYear(1001);
         CountryMapper countryMapper = session.getMapper(CountryMapper.class);
         int i = countryMapper.update(country);
         System.out.println(i);
-//        session.commit();
+        session.commit();
 
     }
 
@@ -66,6 +67,7 @@ public class BaseTest {
             country.setCountrycode("222");
             country.setCountryname("222");
             country.setAccountID(1001);
+            country.setAccountYear(1001);
 
             CountryMapper mapper = session.getMapper(CountryMapper.class);
             List<Country> countries = mapper.query(country);
@@ -75,7 +77,8 @@ public class BaseTest {
             country1.setId(4);
             country1.setCountrycode("111");
             country1.setCountryname("222");
-            country1.setAccountID(1003);
+            country1.setAccountID(1001);
+            country1.setAccountYear(1003);
             countries = mapper.query(country1);
             System.out.println(countries);
             session.commit();
@@ -90,7 +93,8 @@ public class BaseTest {
         country.setId(1);
         country.setCountrycode("222");
         country.setCountryname("222");
-        country.setAccountID(1003);
+        country.setAccountID(1001);
+        country.setAccountYear(1003);
 
         CountryMapper mapper = session.getMapper(CountryMapper.class);
         List<Country> countries = mapper.queryMultiTables(country);

@@ -102,7 +102,7 @@ public class ShardPlugin implements Interceptor {
         }
     }
 
-    private boolean isShouldParse(String mapperId)  {
+    private boolean isShouldParse(String mapperId) {
         Boolean parse = cache.get(mapperId);
 
         if (parse != null) {//已被缓存
@@ -114,29 +114,20 @@ public class ShardPlugin implements Interceptor {
         Class<?> clazz = null;
 
         try {
-            Resources.classForName(className);
+            clazz = Resources.classForName(className);
         } catch (ClassNotFoundException e) {
             throw new ShardException("class not found ");
         }
 
         Method method = ReflectionUtils.findMethod(clazz.getDeclaredMethods(), methodName);
-        /*
-         * 1.<selectKey>不做解析
-         * 2.在ignoreList里的sql不用处理
-         * 3.如果不在ignoreList里并且没有配置parseList则进行处理
-         * 4.如果不在ignoreList里并且也在parseList里则进行处理
-         * 5.如果不在ignoreList里并且也不在parseList里则不进行处理
-         */
+
         if (method.isAnnotationPresent(ShardingTable.class)) {
             parse = true;
         } else if (!mapperId.endsWith("!selectKey")) {
 
             ShardConfigHolder configHolder = ShardConfigHolder.getInstance();
-
-            if (!configHolder.isIgnoreId(mapperId)) {
-                if (!configHolder.isConfigParseId() || configHolder.isParseId(mapperId)) {
-                    parse = true;
-                }
+            if (configHolder.isParseId(mapperId)) {
+                parse = true;
             }
         }
 

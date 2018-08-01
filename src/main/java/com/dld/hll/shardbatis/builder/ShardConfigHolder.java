@@ -3,6 +3,7 @@
  */
 package com.dld.hll.shardbatis.builder;
 
+import com.dld.hll.shardbatis.ShardException;
 import com.dld.hll.shardbatis.strategy.ShardStrategy;
 
 import java.util.HashMap;
@@ -25,8 +26,10 @@ public class ShardConfigHolder {
      */
 	private Map<String, ShardStrategy> strategyRegister = new HashMap<String, ShardStrategy>();
 
-	private Set<String> ignoreSet;
-	private Set<String> parseSet;
+	private Set<String> ignoreSet = new HashSet<>();
+	private Set<String> parseSet = new HashSet<>();
+
+	private Set<String> totalSet = new HashSet<>();
 
 	private ShardConfigHolder() {
 	}
@@ -58,10 +61,12 @@ public class ShardConfigHolder {
 	 * @param id
 	 */
 	public synchronized void addIgnoreId(String id) {
-		if (ignoreSet == null) {
-			ignoreSet = new HashSet<String>();
-		}
+
+		if (totalSet.contains(id)) {
+		    throw new ShardException(id + " has already existed ");
+        }
 		ignoreSet.add(id);
+		totalSet.add(id);
 	}
 
 	/**
@@ -69,38 +74,27 @@ public class ShardConfigHolder {
 	 * @param id
 	 */
 	public synchronized void addParseId(String id) {
-		if (parseSet == null) {
-			parseSet = new HashSet<String>();
-		}
+        if (totalSet.contains(id)) {
+            throw new ShardException(id + " has already existed ");
+        }
 		parseSet.add(id);
+        totalSet.add(id);
 	}
-
-	/**
-	 * 判断是否配置过parse id<br>
-	 * 如果配置过parse id,shardbatis只对parse id范围内的sql进行解析和修改
-	 * @return
-	 */
-	public boolean isConfigParseId() {
-		return parseSet != null;
-	}
-
 	/**
 	 * 判断参数ID是否在配置的parse id范围内
-	 * 
 	 * @param id
 	 * @return
 	 */
 	public boolean isParseId(String id) {
-		return parseSet != null && parseSet.contains(id);
+		return parseSet.contains(id);
 	}
 
 	/**
 	 * 判断参数ID是否在配置的ignore id范围内
-	 * 
 	 * @param id
 	 * @return
 	 */
 	public boolean isIgnoreId(String id) {
-		return ignoreSet != null && ignoreSet.contains(id);
+		return ignoreSet.contains(id);
 	}
 }

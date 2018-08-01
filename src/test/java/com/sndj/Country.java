@@ -13,7 +13,7 @@ public class Country {
 
 
     private Integer accountID;
-    private String accountYear;
+    private Integer accountYear;
 
     private String addr;
 

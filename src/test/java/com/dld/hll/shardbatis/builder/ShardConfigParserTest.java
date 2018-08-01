@@ -22,8 +22,8 @@ public class ShardConfigParserTest {
         strategy = factory.getStrategy("test_table2");
         Assert.assertNotNull(strategy);
 
-        boolean configed = factory.isConfigParseId();
-        Assert.assertFalse(configed);
+//        boolean configed = factory.isConfigParseId();
+//        Assert.assertFalse(configed);
 
         boolean ret = factory.isIgnoreId("ignoreId1");
         Assert.assertFalse(ret);
@@ -44,8 +44,8 @@ public class ShardConfigParserTest {
         strategy = factory.getStrategy("test_table2");
         Assert.assertNotNull(strategy);
 
-        boolean configed = factory.isConfigParseId();
-        Assert.assertTrue(configed);
+//        boolean configed = factory.isConfigParseId();
+//        Assert.assertTrue(configed);
 
         boolean ret = factory.isIgnoreId("ignoreId1");
         Assert.assertTrue(ret);
