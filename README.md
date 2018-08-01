@@ -1,7 +1,7 @@
-财务系统 > 基于mybatis拦截器的分表 > sharding (2).png
-
+基于mybatis拦截器的分表
+https://www.processon.com/view/link/5b615c6ce4b067df59f4d8bb
 1.实现自定义拦截器。拦截在StatementHandler的prepare之前。
-
+```java
 package com.dld.hll.shardbatis.plugin;
  
  
@@ -14,18 +14,20 @@ public class ShardPlugin implements Interceptor {
  
 ......
 ......
+```
 
 
 2.在mybatis配置文件中添加配置
-
+```java
 <plugins>
     <plugin interceptor="com.dld.hll.shardbatis.plugin.ShardPlugin">
             <property name="shardingConfig" value="shard_config.xml"/>
     </plugin>
 </plugins>
-
+```
 
 3.分表相关配置文件shard_config.xml，用于配置分表策略，哪些Mapper的方法的参与分表。此文件从classpath中查找。
+```java
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE shardingConfig PUBLIC "-//shardbatis.googlecode.com//DTD Shardbatis 2.0//EN"
  "http://shardbatis.googlecode.com/dtd/shardbatis-config.dtd">
@@ -41,7 +43,7 @@ public class ShardPlugin implements Interceptor {
     <strategy tableName="country"
  strategyClass="com.dld.hll.shardbatis.strategy.impl.GeneralLedgerStrategy"/>
 </shardingConfig>
-
+```
 
 在shard_config.xml中配置预分表的分表策略，如果未配置，将不做逻辑表到真实表的转换。
 在shard_config.xml中配置预分表的Mapper的方法，使用类名+方法名，用于说明此方法对应SQL将会被解析，并做分表处理。
@@ -49,7 +51,7 @@ public class ShardPlugin implements Interceptor {
 
  
 4.转换器
-
+```java
 public interface SqlConverter {
    /**
     * 对sql进行修改
@@ -60,11 +62,11 @@ public interface SqlConverter {
     */
    String convert(Statement statement,Object parameterObject,String mapperId);
 }
-
+```
 
 
 5.分表策略
-
+```java
 public interface ShardStrategy {
     /**
      * 得到实际表名
@@ -76,7 +78,7 @@ public interface ShardStrategy {
      */
     public abstract String getTargetTableName(String originTableName, Object parameterObject, String mapperId);
 }
-
+```
 
 
 GeneralLedgerStrategy为自实现的分表策略，分片键为accountID和accountYear，即如果使用此分表参数，Mapper方法对应入参必须有accountID和accountYear属性，必须有值。
